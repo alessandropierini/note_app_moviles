@@ -1,0 +1,7 @@
+{
+  "name": "notePadApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

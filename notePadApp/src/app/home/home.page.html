@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-padding">
+      Notepad
+    </ion-title>
+    <ion-buttons slot="start" class="ion-padding">
+      <ion-icon slot="icon-only" name="arrow-back" class="ion-padding" routerLink="/"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding">
+      <ion-icon slot="icon-only" name="add-circle" class="ion-padding" routerLink="/create-note"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding">
+      <ion-icon slot="icon-only" name="settings" class="ion-padding" routerLink="/settings"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding">
+      <ion-icon slot="icon-only" name="log-out" class="ion-padding" (click)="logout()"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <h4 class="heading">Filter</h4>
+  <ion-item>
+    <ion-label>Notes</ion-label>
+    <ion-select placeholder="All" [(ngModel)]="selectedNote" (ionChange)="onNoteSelect($event)">
+      <ion-select-option>All</ion-select-option>
+      <ion-select-option>Favorites</ion-select-option>
+      <ion-select-option>Collections</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <h4 class="heading">Browse</h4>
+  <ion-list *ngIf="userNotes">
+    <ion-item *ngFor="let notes of userNotes">
+      <ion-thumbnail slot="start">
+        <img src="https://cdn-icons-png.flaticon.com/512/5088/5088058.png" alt="">
+      </ion-thumbnail>
+      <ion-label>
+        <h3 class="heading">{{notes.title}}</h3>
+        <p>{{notes.description}}</p>
+      </ion-label>
+
+      <ion-item *ngIf="fav">
+        <ion-icon slot="end" name="star" (click)="unFavoriteFx()"></ion-icon>
+        <ion-icon slot="end" name="trash" (click)="trash()"></ion-icon>
+      </ion-item>
+      <ion-item *ngIf="fav == false">
+        <ion-icon slot="end" name="star-outline" (click)="favoriteFx()"></ion-icon>
+        <ion-icon slot="end" name="trash" (click)="trash()"></ion-icon>
+      </ion-item>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

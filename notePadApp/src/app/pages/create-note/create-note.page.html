@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create a new note</ion-title>
+
+    <ion-buttons slot="start" class="ion-padding">
+      <ion-icon slot="icon-only" name="arrow-back" class="ion-padding" routerLink="/"></ion-icon>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-item>
+<ion-input [(ngModel)]="title" placeholder="title" type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input [(ngModel)]="description"   placeholder="description" type="text"></ion-input>
+  </ion-item>
+
+<ion-button color="dark" expand="block" (click)="createNewNote()">
+  Create new note
+</ion-button>
+
+</ion-content>

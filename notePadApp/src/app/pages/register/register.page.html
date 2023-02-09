@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-item>
+<ion-input [(ngModel)]="username" placeholder="username" type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input [(ngModel)]="password"  [(ngModel)]="userExists" placeholder="password" type="password"></ion-input>
+  </ion-item>
+
+<ion-button color="dark" expand="block" (click)="register()">
+  Register
+</ion-button>
+
+<p class="ion-text-center">Ya estas registrado? <strong routerLink="/login">Inicia sesion</strong></p>
+
+<p class="ion-text-center">
+  <ion-spinner *ngIf="isLoading"></ion-spinner>
+</p>
+
+</ion-content>

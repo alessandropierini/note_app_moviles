@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-padding">
+      <ion-icon slot="icon-only" name="arrow-back" class="ion-padding" routerLink="/"></ion-icon>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-label>Cambiar nombre de usuario:</ion-label>
+  <ion-item>
+    <ion-input [(ngModel)]="username" placeholder="username" type="text"></ion-input>
+  </ion-item>
+  <ion-label>Cambiar contrasena:</ion-label>
+  <ion-item>
+    <ion-input [(ngModel)]="password" placeholder="password" type="password"></ion-input>
+  </ion-item>
+
+  <ion-button class="ion-padding" color="" expand="block">
+    Guardar cambios
+  </ion-button>
+  <ion-button class="ion-padding" color="dark" expand="block">
+Eliminar cuenta
+</ion-button>
+
+</ion-content>
