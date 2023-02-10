@@ -5,7 +5,6 @@ const User = require('../models/user')
 
 router.post('/', (req, res) => {
 
-//problema aqui, no logro encontrar user
     console.log(req.body.name)
 
     Note.find({owner: req.body.name}).then(notes => {

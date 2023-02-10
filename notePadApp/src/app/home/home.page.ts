@@ -17,25 +17,27 @@ export class HomePage implements OnInit {
 
   constructor(private router: Router, private httpClient: HttpClient) { }
 
+
+
   ngOnInit(): void {
-    var user = this.user
-    user = JSON.parse(localStorage.getItem('User')!)
-    this.username = user.username
-    if (user == null) {
+    this.user = JSON.parse(localStorage.getItem('User')!)
+    console.log(this.user.username)
+    if (this.user == null) {
       this.router.navigateByUrl('/login', { replaceUrl: true })
     } else {
-
-      //deberia de estar enviando el username a server
-
-      this.httpClient.post('http://localhost:3000/notes', {name: this.username} ).subscribe(res => 
-      {
+      this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
         this.userNotes = res
-        
-        console.log(this.userNotes)
-        console.log("favorite:" + this.fav)
-      }, 
-      error => {console.log("error" + error)})
+      },
+        error => { console.log("error" + error) })
     }
+  }
+
+  ionViewWillEnter(){
+    this.user = JSON.parse(localStorage.getItem('User')!)
+    this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
+      this.userNotes = res
+    },
+      error => { console.log("error" + error) })
   }
 
   onNoteSelect(e) {
@@ -44,20 +46,20 @@ export class HomePage implements OnInit {
   }
 
 
-  logout(){
-    this.user = null
+  logout() {
+    localStorage.clear()
     this.router.navigateByUrl('/login', { replaceUrl: true })
   }
 
-  favoriteFx(){
+  favoriteFx() {
     this.fav = true
     console.log("favoritos")
   }
-  unFavoriteFx(){
+  unFavoriteFx() {
     this.fav = false
   }
 
-  trash(){
+  trash() {
     console.log("trash")
   }
 
