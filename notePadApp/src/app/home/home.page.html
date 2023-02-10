@@ -39,14 +39,12 @@
       <ion-label>
         <h3 class="heading">{{notes.title}}</h3>
         <p>{{notes.description}}</p>
+        <p>{{notes.favorite}}</p>
       </ion-label>
 
-      <ion-item *ngIf="notes.favorite === 'true'">
-        <ion-icon slot="end" name="star" (click)="unFavoriteFx()"></ion-icon>
-        <ion-icon slot="end" name="trash" (click)="trash()"></ion-icon>
-      </ion-item>
-      <ion-item *ngIf="notes.favorite === 'false'">
-        <ion-icon slot="end" name="star-outline" (click)="favoriteFx()"></ion-icon>
+      <ion-item>
+        <ion-icon slot="end" name="star" (click)="unFavoriteFx()" *ngIf="notes.favorite; notFavorite"></ion-icon>
+        <ion-icon slot="end" name="star-outline" (click)="favoriteFx()" #notFavorite></ion-icon>
         <ion-icon slot="end" name="trash" (click)="trash()"></ion-icon>
       </ion-item>
     </ion-item>

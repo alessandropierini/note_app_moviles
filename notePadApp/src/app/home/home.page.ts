@@ -57,6 +57,7 @@ export class HomePage implements OnInit {
   }
   unFavoriteFx() {
     this.fav = false
+    console.log("not favorites")
   }
 
   trash() {
