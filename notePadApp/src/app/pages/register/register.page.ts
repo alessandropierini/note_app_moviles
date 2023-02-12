@@ -12,6 +12,7 @@ export class RegisterPage implements OnInit {
 
   username: string = ""
   password: string = ""
+  bio: string = ""
   isLoading: boolean = false
   userExists: boolean = true
 
@@ -32,7 +33,8 @@ export class RegisterPage implements OnInit {
     let user = {
       username: this.username,
       password: this.password,
-      userExists: true
+      userExists: true,
+      bio: this.bio
 
     }
 

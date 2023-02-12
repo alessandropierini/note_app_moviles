@@ -28,6 +28,14 @@ const routes: Routes = [
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
   },
+  {
+    path: 'view-note',
+    loadChildren: () => import('./pages/view-note/view-note.module').then( m => m.ViewNotePageModule)
+  },
+  {
+    path: 'users',
+    loadChildren: () => import('./pages/users/users.module').then( m => m.UsersPageModule)
+  },
 ];
 
 @NgModule({

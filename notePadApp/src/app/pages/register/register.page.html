@@ -10,7 +10,11 @@
 <ion-input [(ngModel)]="username" placeholder="username" type="text"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input [(ngModel)]="password"  [(ngModel)]="userExists" placeholder="password" type="password"></ion-input>
+    <ion-input [(ngModel)]="password"  placeholder="password" type="password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input [(ngModel)]="bio"  placeholder="bio" type="text"></ion-input>
+
   </ion-item>
 
 <ion-button color="dark" expand="block" (click)="register()">

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrated Users</ion-title>
+
+    <ion-buttons slot="start" class="ion-padding">
+      <ion-icon slot="icon-only" name="arrow-back" class="ion-padding" routerLink="/"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+
+  <h4 class="heading">Browse</h4>
+  <ion-list *ngIf="users">
+
+    <ion-item *ngFor="let user of users">
+      <ion-icon slot="start" name="person" class="ion-padding"></ion-icon>
+      <ion-label>
+        <h1 class="heading">{{user.username}}</h1>
+        <h3>{{user.bio}}</h3>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

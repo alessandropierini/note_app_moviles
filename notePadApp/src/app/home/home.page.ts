@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router  } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +11,7 @@ export class HomePage implements OnInit {
 
   selectedNote: any
   userNotes: any
+  originalSelectedNote: any
   username: any
   user: any
   fav: boolean = false
@@ -36,14 +37,21 @@ export class HomePage implements OnInit {
     this.user = JSON.parse(localStorage.getItem('User')!)
     this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
       this.userNotes = res
+      this.originalSelectedNote = res
     },
       error => { console.log("error" + error) })
   }
 
   onNoteSelect(e) {
+    this.userNotes = this.originalSelectedNote
     this.selectedNote = e.detail.value
-    console.log(this.selectedNote)
+    this.userNotes = this.selectedNote.filter(noteSelec => {
+      return noteSelec.favorite == this.selectedNote
+    })
+
   }
+
+
 
 
   logout() {

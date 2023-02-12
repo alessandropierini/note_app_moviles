@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema({
     userExists: {
         type: Boolean,
         required: [true]
+    },
+    bio: {
+        type: String,
+        required: [true, 'Por favor, ingrese un bio']
     }
 })
 
