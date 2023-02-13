@@ -1,22 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router  } from '@angular/router';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
+
 export class HomePage implements OnInit {
 
-  selectedNote: any
   userNotes: any
-  originalSelectedNote: any
   username: any
   user: any
-  fav: boolean = false
+  note: any
 
-  constructor(private router: Router, private httpClient: HttpClient) { }
+  constructor(private router: Router, private httpClient: HttpClient, private alertCtrl: AlertController) { }
 
 
 
@@ -33,25 +33,13 @@ export class HomePage implements OnInit {
     }
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.user = JSON.parse(localStorage.getItem('User')!)
     this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
       this.userNotes = res
-      this.originalSelectedNote = res
     },
       error => { console.log("error" + error) })
   }
-
-  onNoteSelect(e) {
-    this.userNotes = this.originalSelectedNote
-    this.selectedNote = e.detail.value
-    this.userNotes = this.selectedNote.filter(noteSelec => {
-      return noteSelec.favorite == this.selectedNote
-    })
-
-  }
-
-
 
 
   logout() {
@@ -59,17 +47,70 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl('/login', { replaceUrl: true })
   }
 
-  favoriteFx() {
-    this.fav = true
-    console.log("favoritos")
-  }
-  unFavoriteFx() {
-    this.fav = false
-    console.log("not favorites")
+  favorite(notes) {
+    this.note = notes
+    this.httpClient.post('http://localhost:3000/notes/favorite', { note: this.note }).subscribe(res => {
+      this.userNotes = res
+    }, error => { console.log("error" + error) })
   }
 
-  trash() {
+showFavorites(){
+  this.user = JSON.parse(localStorage.getItem('User')!)
+  this.httpClient.post('http://localhost:3000/notes/showFavorites', { name: this.user.username }).subscribe(res => {
+    this.userNotes = res
+  },
+    error => { console.log("error" + error) })
+}
+
+showAll(){
+  this.user = JSON.parse(localStorage.getItem('User')!)
+  this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
+    this.userNotes = res
+  },
+    error => { console.log("error" + error) })
+}
+
+
+  trash(notes) {
     console.log("trash")
+    console.log(notes)
+
+    this.httpClient.post('http://localhost:3000/notes/deleteNote', { deletedNote: notes }).subscribe(res => {
+      this.userNotes = res
+    },
+      error => { console.log("error" + error) })
   }
+
+  async presentConfirm(notes) {
+    let alert = this.alertCtrl.create({
+      header: 'ELIMINAR NOTA',
+      message: 'Deseas eliminar esta nota?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancelar',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            console.log("trash")
+            console.log(notes)
+        
+            this.httpClient.post('http://localhost:3000/notes/deleteNote', { deletedNote: notes }).subscribe(res => {
+              this.userNotes = res
+            },
+              error => { console.log("error" + error) })
+          }
+        }
+      ]
+    });
+    (await alert).present();
+  }
+
 
 }
+
+

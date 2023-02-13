@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
       password: this.password
     }
 
-    this.http.post('http://localhost:3000/users/login', credentials)
+    this.http.post('http://localhost:3000/users/login', {credentials})
       .subscribe(res => {
         this.isLoading = false
         localStorage.setItem('User', JSON.stringify(res))

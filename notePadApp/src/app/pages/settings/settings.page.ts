@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -9,11 +10,12 @@ import { Router } from '@angular/router';
 })
 export class SettingsPage implements OnInit {
 
-  user: string = ""
+  user: any
   password: string = ""
   bio: string = ""
+  newInfo = []
 
-  constructor(private router: Router, private httpClient: HttpClient) { }
+  constructor(private router: Router, private httpClient: HttpClient, private alertController: AlertController) { }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('User')!)
@@ -23,49 +25,75 @@ export class SettingsPage implements OnInit {
     } else {
       error => { console.log("error" + error) }
     }
+
   }
 
-
-
-  update() {
-    let newInfo = {
-      user: this.user,
-      newPassword: this.password,
-      newBio: this.bio
-    }
-    console.log(newInfo)
-
-//quedaste aqui
-
-    this.httpClient.post('http://localhost:3000/users/updateInfo', this.user ).subscribe(res => {
-       console.log(res)
+  eliminar() {
+    this.httpClient.post('http://localhost:3000/users/eliminarUsuario', { username: this.user.username }).subscribe(res => {
+      localStorage.clear()
+      this.router.navigateByUrl('/register', { replaceUrl: true })
+    }, error => {
+      console.log(error)
+      this.presentAlert('Eliminacion fallida', error.error.error)
     })
   }
 
-}
-
-/**
- *  register() {
-    this.isLoading = true
-    let user = {
-      username: this.username,
-      password: this.password,
-      userExists: true,
-      bio: this.bio
-
+  update() {
+    let newInfo = {
+      username: this.user.username,
+      newPassword: this.password,
+      newBio: this.bio
     }
+    console.log("Update initialized")
 
-    this.http.post('http://localhost:3000/users/register', user)
-      .subscribe(res => {
-        this.isLoading = false
-        localStorage.setItem('User', JSON.stringify(res))
-        this.router.navigateByUrl('/login', { replaceUrl: true })
-      }, error => {
-        this.isLoading = false
-        console.log(error)
-        this.presentAlert('Registration failed', error.error.error)
-      })
+    this.httpClient.post('http://localhost:3000/users/updateInfo', { info: newInfo }).subscribe(res => {
+      console.log(res)
+      this.router.navigateByUrl('', { replaceUrl: true })
+
+    }, error => {
+      console.log(error)
+      this.presentAlert('Update failed', error.error.error)
+    })
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: header,
+      message: message,
+      buttons: ['Ok']
+    })
 
   }
- * 
- */
+
+  async presentConfirm() {
+    let alert = this.alertController.create({
+      header: 'ELIMINAR USUARIO',
+      message: 'Estas seguro que deseas eliminar tu usuario? \n No hay manera de recuperar las notas.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancelar',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Eliminar usuario permanentemente',
+          handler: () => {
+            this.httpClient.post('http://localhost:3000/users/eliminarUsuario', { username: this.user.username }).subscribe(res => {
+              localStorage.clear()
+              this.router.navigateByUrl('/register', { replaceUrl: true })
+            }, error => {
+              console.log(error)
+              this.presentAlert('Eliminacion fallida', error.error.error)
+            })
+          }
+        }
+      ]
+    });
+    (await alert).present();
+  }
+
+
+}

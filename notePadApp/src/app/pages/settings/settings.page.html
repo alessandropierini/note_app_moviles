@@ -9,19 +9,25 @@
 
 <ion-content class="ion-padding">
 
-  <ion-label>Cambiar contrasena:</ion-label>
-  <ion-item>
-    <ion-input [(ngModel)]="password" placeholder="password" type="password"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input [(ngModel)]="bio" placeholder="bio" type="text"></ion-input>
-  </ion-item>
+  <div class="ion-padding">
+    <h4 class="heading">Cambia tu bio!</h4>
+    <ion-item>
+      <ion-input [(ngModel)]="bio" placeholder="bio" type="text"></ion-input>
+    </ion-item>
+  </div>
+  <div class="ion-padding">
+    <h4 class="heading">Cambia tu password!</h4>
+    <p>Si no deseas cambiar tu password, deja el campo en blanco.</p>
+    <ion-item>
+      <ion-input [(ngModel)]="password" placeholder="password" type="password"></ion-input>
+    </ion-item>
+  </div>
 
   <ion-button class="ion-padding" color="dark" expand="block" (click)="update()">
     Guardar cambios
   </ion-button>
-  <ion-button class="ion-padding" color="danger" expand="block">
-Eliminar cuenta
-</ion-button>
+  <ion-button class="ion-padding" color="danger" expand="block" (click)="presentConfirm()">
+    Eliminar cuenta
+  </ion-button>
 
 </ion-content>

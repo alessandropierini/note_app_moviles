@@ -1,8 +1,5 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="ion-padding">
-      Notepad
-    </ion-title>
     <ion-buttons slot="start" class="ion-padding">
       <ion-icon slot="icon-only" name="arrow-back" class="ion-padding" routerLink="/"></ion-icon>
     </ion-buttons>
@@ -12,8 +9,8 @@
     </ion-buttons>
 
     <ion-buttons slot="end" class="ion-padding">
-      <ion-icon slot="icon-only" name="people" class="ion-padding" routerLink="/users"></ion-icon>
-    </ion-buttons>
+      <ion-icon slot="icon-only" name="folder" class="ion-padding" routerLink="/"></ion-icon>
+    </ion-buttons> 
 
     <ion-buttons slot="end" class="ion-padding">
       <ion-icon slot="icon-only" name="settings" class="ion-padding" routerLink="/settings"></ion-icon>
@@ -27,34 +24,47 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
-  <h4 class="heading">Filter</h4>
-  <ion-item>
-    <ion-label>Notes</ion-label>
-    <ion-select placeholder="All" [(ngModel)]="selectedNote" (ionChange)="onNoteSelect($event)">
-      <ion-select-option>All</ion-select-option>
-      <ion-select-option>Favorites</ion-select-option>
-      <ion-select-option>Collections</ion-select-option>
-    </ion-select>
-  </ion-item>
-
-  <h4 class="heading">Browse</h4>
+  <h4 class="heading">Notes</h4>
   <ion-list *ngIf="userNotes">
     <ion-item *ngFor="let notes of userNotes">
       <ion-thumbnail slot="start">
         <img src="https://cdn-icons-png.flaticon.com/512/5088/5088058.png" alt="">
       </ion-thumbnail>
-      <ion-label>
+      <ion-label [routerLink]="['/view-note', notes]">
         <h3 class="heading">{{notes.title}}</h3>
         <p>{{notes.description}}</p>
-        <p>{{notes.favorite}}</p>
       </ion-label>
-
-      <ion-item>
-        <ion-icon slot="end" name="star" (click)="unFavoriteFx()" *ngIf="notes.favorite; notFavorite"></ion-icon>
-        <ion-icon slot="end" name="star-outline" (click)="favoriteFx()" #notFavorite></ion-icon>
-        <ion-icon slot="end" name="trash" (click)="trash()"></ion-icon>
-      </ion-item>
+      <div *ngIf="notes.favorite == true">
+        <ion-item lines="none">
+          <ion-icon slot="end" name="star" (click)="favorite(notes)"></ion-icon>
+          <ion-icon slot="end" name="trash" (click)="presentConfirm(notes)"></ion-icon>
+        </ion-item>
+      </div>
+      <div *ngIf="notes.favorite == false">
+        <ion-item lines="none">
+          <ion-icon slot="end" name="star-outline" (click)="favorite(notes)"></ion-icon>
+          <ion-icon slot="end" name="trash" (click)="presentConfirm(notes)"></ion-icon>
+        </ion-item>
+      </div>
     </ion-item>
   </ion-list>
+</ion-content>
 
+<ion-content>
+<ion-tabs>
+  <ion-tab-bar>
+    <ion-tab-button>
+      <ion-icon name="star" (click)="showFavorites()"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button>
+      <ion-icon name="home" (click)="showAll()"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button>
+      <ion-icon name="folder-open" routerLink="/collections"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button>
+      <ion-icon name="people" routerLink="/users"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
 </ion-content>

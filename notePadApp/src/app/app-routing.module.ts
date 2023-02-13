@@ -36,6 +36,10 @@ const routes: Routes = [
     path: 'users',
     loadChildren: () => import('./pages/users/users.module').then( m => m.UsersPageModule)
   },
+  {
+    path: 'collections',
+    loadChildren: () => import('./pages/collections/collections.module').then( m => m.CollectionsPageModule)
+  },
 ];
 
 @NgModule({

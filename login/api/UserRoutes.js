@@ -1,43 +1,41 @@
 const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-const mongoose = require('mongoose')
 
-
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res) => {
 
     const newUser = new User(req.body)
     console.log("Unencripted password: " + newUser.password)
-    bcrypt.hash(newUser.password, 10, function (error, hash) {
+    bcrypt.hash(newUser.password, 10, async function (error, hash) {
         newUser.password = hash
         console.log("encrypted password: " + newUser.password)
+        if (await userExists(req.body.username)) {
+            res.status(409).json({ error: 'Username already exists' })
+            console.log('User already exists')
+        } else {
+            newUser.save().then(user => {
+                res.status(201).json(user)
+            }).catch(error => {
+                res.status(500).json({ error: error.message })
+            })
+        }
     })
-
-    if (await userExists(req.body.username)) {
-        res.status(409).json({ error: 'Username already exists' })
-        console.log('User already exists')
-    } else {
-        newUser.save().then(user => {
-            res.status(201).json(user)
-        }).catch(error => {
-            res.status(500).json({ error: error.message })
-        })
-    }
 })
 
 router.post('/login', (req, res) => {
 
-    User.findOne({ username: req.body.username }).then(user => {
-
-        bcrypt.compare(req.body.password, user.password, function (error, result) {
-
-            if (result) {
-                res.status(200).json(user)
-            } else {
-                console.log(error)
-                res.status(401).json({ error: "Usuario o contrasena Incorrecta" })
-            }
-        })
+    User.findOne({ username: req.body.credentials.username }).then(user => {
+        if (user) {
+            bcrypt.compare(req.body.credentials.password, user.password, function (error, result) {
+                if (result) {
+                    res.status(200).json(user)
+                } else {
+                    res.status(401).json({ error: "Usuario o contrasena Incorrecta" })
+                }
+            })
+        } else {
+            res.status(401).json({ error: "Usuario no existe" })
+        }
     })
 })
 
@@ -54,23 +52,43 @@ router.get('/registeredUsers', (req, res) => {
     })
 })
 
-//quedaste aqui
+router.post('/eliminarUsuario', (req, res) => {
+    console.log(req.body.username)
+    User.findOneAndDelete({ username: req.body.username }).then(user => {
+        if (user) {
+            res.status(200).json(true)
+        } else {
+            res.status(400).json({ msg: "No se encontro usuario" })
+        }
+    })
+})
 
 router.post('/updateInfo', (req, res) => {
-    console.log(req.body.user)
-    User.findOne({ username: req.body.user }).then(user => {
 
-        mongoose.updateOne(
-            { username: req.body.user },
+    bcrypt.hash(req.body.info.newPassword, 10, async function (error, hash) {
+        newHashedPassword = hash
+        console.log("encrypted password: " + newHashedPassword)
+
+        await User.updateOne(
+            { username: req.body.info.username },
             {
-                $set:
-                {
-                    password: newPassword,
-                    bio: newBio
+                $set: {
+                    bio: req.body.info.newBio,
+                    password: this.newHashedPassword
                 }
-            }
-        )
+            }).then(user => {
+                if (user) {
+                    res.status(200).json(true)
+                    console.log("user updated")
+                } else {
+                    res.status(401).json
+                    console.log("user not found")
+                }
+            })
+
     })
+
+
 })
 
 
@@ -85,6 +103,5 @@ const userExists = async (username) => {
         return false
     }
 }
-
 
 module.exports = router
