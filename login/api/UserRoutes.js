@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+const Note = require('../models/note')
 
 router.post('/register', (req, res) => {
 
@@ -55,11 +56,14 @@ router.get('/registeredUsers', (req, res) => {
 router.post('/eliminarUsuario', (req, res) => {
     console.log(req.body.username)
     User.findOneAndDelete({ username: req.body.username }).then(user => {
-        if (user) {
-            res.status(200).json(true)
-        } else {
-            res.status(400).json({ msg: "No se encontro usuario" })
-        }
+            if (user) {
+                console.log("User: " + user.username)
+                Note.deleteMany({ owner: user.username }).then( user => {
+                res.status(200).json({ msg: "Usuario eliminado" })})
+            } else {
+                res.status(400).json({ msg: "No se encontro usuario" })
+            }
+    
     })
 })
 

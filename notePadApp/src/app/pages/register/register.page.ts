@@ -42,7 +42,7 @@ export class RegisterPage implements OnInit {
       .subscribe(res => {
         this.isLoading = false
         localStorage.setItem('User', JSON.stringify(res))
-        this.router.navigateByUrl('/login', { replaceUrl: true })
+        this.router.navigateByUrl('', { replaceUrl: true })
       }, error => {
         this.isLoading = false
         console.log(error)
