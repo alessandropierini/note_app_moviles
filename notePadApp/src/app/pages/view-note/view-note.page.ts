@@ -38,7 +38,7 @@ export class ViewNotePage implements OnInit {
     this.newNoteDescription = this.noteDescription
 
 
-  }
+  } 
 
   saveNote() {
     let newInfo = {

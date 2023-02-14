@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000
 //Routes
 const userRoutes = require('./api/UserRoutes')
 const noteRoutes = require('./api/NoteRoutes')
+const collectionRoutes = require('./api/CollectionRoutes')
 
 const app = express()
 app.use(cors())
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRoutes)
 app.use('/notes', noteRoutes)
+app.use('/collections', collectionRoutes)
 
 mongoose.set('strictQuery', true)
 

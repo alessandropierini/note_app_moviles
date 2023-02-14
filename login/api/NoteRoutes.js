@@ -14,6 +14,28 @@ router.post('/', (req, res) => {
     })
 })
 
+router.post('/notInCollection', (req, res) => {
+
+    console.log(req.body.name)
+
+    Note.find({ owner: req.body.name }).then(notes => {
+        res.status(200).json(notes)
+    }).catch(err => {
+        res.status(500).json({ err })
+    })
+})
+
+router.post('/InCollection', (req, res) => {
+
+    console.log(req.body.name)
+
+    Note.find({ owner: req.body.name }).then(notes => {
+        res.status(200).json(notes)
+    }).catch(err => {
+        res.status(500).json({ err })
+    })
+})
+
 router.post('/createNewNote', async (req, res) => {
     if (req.body.title == null) {
         res.status(409).json({ error: 'Ingresa un titulo' })
@@ -21,6 +43,9 @@ router.post('/createNewNote', async (req, res) => {
     } else if (req.body.description == null) {
         res.status(409).json({ error: 'Ingresa una descripcion' })
         console.log('Empty description')
+    } else if (await noteExists(req.body.title)) {
+        res.status(409).json({ error: 'Note already exists' })
+        console.log('Note already exists')
     } else {
         const newNote = new Note(req.body)
         newNote.save().then(note => {
@@ -112,8 +137,8 @@ router.post('/deleteNote', (req, res) => {
 })
 
 
-const userNotes = async (username) => {
-    const note = await User.findOne({ owner: username })
+const noteExists = async (title) => {
+    const note = await Note.findOne({ title: title })
     if (note) {
         return true
     } else {

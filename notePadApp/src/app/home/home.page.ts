@@ -11,6 +11,7 @@ import { AlertController } from '@ionic/angular';
 
 export class HomePage implements OnInit {
 
+  userCollections: any
   userNotes: any
   username: any
   user: any
@@ -30,15 +31,27 @@ export class HomePage implements OnInit {
         this.userNotes = res
       },
         error => { console.log("error" + error) })
+
+      this.httpClient.post('http://localhost:3000/collections', { name: this.user.username }).subscribe(res => {
+        this.userCollections = res
+      },
+        error => { console.log("error" + error) })
     }
   }
 
   ionViewWillEnter() {
     this.user = JSON.parse(localStorage.getItem('User')!)
+
     this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
       this.userNotes = res
     },
       error => { console.log("error" + error) })
+
+    this.httpClient.post('http://localhost:3000/collections', { name: this.user.username }).subscribe(res => {
+      this.userCollections = res
+    },
+      error => { console.log("error" + error) })
+
   }
 
 
@@ -54,32 +67,52 @@ export class HomePage implements OnInit {
     }, error => { console.log("error" + error) })
   }
 
-showFavorites(){
-  this.user = JSON.parse(localStorage.getItem('User')!)
-  this.httpClient.post('http://localhost:3000/notes/showFavorites', { name: this.user.username }).subscribe(res => {
-    this.userNotes = res
-  },
-    error => { console.log("error" + error) })
-}
-
-showAll(){
-  this.user = JSON.parse(localStorage.getItem('User')!)
-  this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
-    this.userNotes = res
-  },
-    error => { console.log("error" + error) })
-}
-
-
-  trash(notes) {
-    console.log("trash")
-    console.log(notes)
-
-    this.httpClient.post('http://localhost:3000/notes/deleteNote', { deletedNote: notes }).subscribe(res => {
+  showFavorites() {
+    this.user = JSON.parse(localStorage.getItem('User')!)
+    this.httpClient.post('http://localhost:3000/notes/showFavorites', { name: this.user.username }).subscribe(res => {
       this.userNotes = res
     },
       error => { console.log("error" + error) })
   }
+
+  showAll() {
+    this.user = JSON.parse(localStorage.getItem('User')!)
+    this.httpClient.post('http://localhost:3000/notes', { name: this.user.username }).subscribe(res => {
+      this.userNotes = res
+    },
+      error => { console.log("error" + error) })
+  }
+
+  async presentConfirmCollections(collections) {
+    let alert = this.alertCtrl.create({
+      header: 'ELIMINAR COLECCION',
+      message: 'Deseas eliminar esta coleccion? No se eliminaran las notas.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancelar',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            console.log("trash")
+            console.log(collections)
+
+            this.httpClient.post('http://localhost:3000/collections/deleteCollection', { deletedCollection: collections }).subscribe(res => {
+              this.userCollections = res
+            },
+              error => { console.log("error" + error) })
+          }
+        }
+      ]
+    });
+    (await alert).present();
+  }
+
+
 
   async presentConfirm(notes) {
     let alert = this.alertCtrl.create({
@@ -98,7 +131,7 @@ showAll(){
           handler: () => {
             console.log("trash")
             console.log(notes)
-        
+
             this.httpClient.post('http://localhost:3000/notes/deleteNote', { deletedNote: notes }).subscribe(res => {
               this.userNotes = res
             },

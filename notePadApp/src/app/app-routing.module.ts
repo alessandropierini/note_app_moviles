@@ -37,8 +37,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/users/users.module').then( m => m.UsersPageModule)
   },
   {
-    path: 'collections',
-    loadChildren: () => import('./pages/collections/collections.module').then( m => m.CollectionsPageModule)
+    path: 'create-collection',
+    loadChildren: () => import('./pages/create-collection/create-collection.module').then( m => m.CreateCollectionPageModule)
+  },
+  {
+    path: 'view-collection',
+    loadChildren: () => import('./pages/view-collection/view-collection.module').then( m => m.ViewCollectionPageModule)
   },
 ];
 

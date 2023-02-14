@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-input [(ngModel)]="newCollectionTitle"></ion-input>
+    </ion-title>
+
+    <ion-back-button color="dark" slot="start"></ion-back-button>
+
+    <ion-buttons slot="end" class="ion-padding">
+      <div *ngIf="editing == false">
+        <ion-icon slot="icon-only" name="hammer" class="ion-padding" (click)="editCollection()"></ion-icon>
+      </div>
+
+      <div *ngIf="editing == true">
+        <ion-icon slot="icon-only" name="hammer-outline" class="ion-padding" (click)="editCollection()"></ion-icon>
+      </div>
+    </ion-buttons>
+
+
+    <ion-buttons slot="end" class="ion-padding">
+      <ion-icon slot="icon-only" name="cloud-upload" class="ion-padding" (click)="saveCollection()"></ion-icon>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item color="dark">
+    <ion-input [(ngModel)]="newCollectionDescription"></ion-input>
+  </ion-item>
+
+  <h4 class="heading">Collection Notes</h4>
+  <ion-list *ngIf="userNotesInCollection">
+    <ion-item *ngFor="let notes of userNotesInCollection">
+      <ion-thumbnail slot="start">
+        <img src="https://cdn-icons-png.flaticon.com/512/5088/5088058.png" alt="">
+      </ion-thumbnail>
+      <ion-label [routerLink]="['/view-note', notes]">
+        <h3 class="heading">{{notes.title}}</h3>
+        <p>{{notes.description}}</p>
+      </ion-label>
+      <div>
+        <ion-item lines="none">
+          <ion-icon slot="end" name="add"></ion-icon>
+        </ion-item>
+      </div>
+
+    </ion-item>
+  </ion-list>
+  <div *ngIf="editing == true">
+    <h4 class="heading">Other notes</h4>
+    <ion-list *ngIf="userNotesNotInCollection">
+      <ion-item *ngFor="let notes of userNotesNotInCollection">
+        <ion-thumbnail slot="start">
+          <img src="https://cdn-icons-png.flaticon.com/512/5088/5088058.png" alt="">
+        </ion-thumbnail>
+        <ion-label [routerLink]="['/view-note', notes]">
+          <h3 class="heading">{{notes.title}}</h3>
+          <p>{{notes.description}}</p>
+        </ion-label>
+        <div>
+          <ion-item lines="none">
+            <ion-icon slot="end" name="add"></ion-icon>
+          </ion-item>
+        </div>
+
+      </ion-item>
+    </ion-list>
+  </div>
+
+
+</ion-content>

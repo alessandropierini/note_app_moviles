@@ -4,17 +4,16 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-create-note',
-  templateUrl: './create-note.page.html',
-  styleUrls: ['./create-note.page.scss'],
+  selector: 'app-create-collection',
+  templateUrl: './create-collection.page.html',
+  styleUrls: ['./create-collection.page.scss'],
 })
-export class CreateNotePage implements OnInit {
+export class CreateCollectionPage implements OnInit {
 
   title: string = ""
   description: string = ""
-  isLoading: boolean = false
   owner: string = ""
-  info: string = ""
+  notes: any
 
   constructor(private http: HttpClient, private router: Router, private alertController: AlertController) { }
 
@@ -25,26 +24,20 @@ export class CreateNotePage implements OnInit {
     
   }
 
-  createNewNote() {
-    this.isLoading = true
-    let note = {
+  createNewCollection() {
+    let collection = {
       title: this.title,
       description: this.description,
-      owner: this.owner,
-      info: "",
-      favorite: false,
-      
+      owner: this.owner,      
     }
 
-    this.http.post('http://localhost:3000/notes/createNewNote', note)
+    this.http.post('http://localhost:3000/collections/createNewCollection', collection)
       .subscribe(res => {
-        this.isLoading = false
-        localStorage.setItem('note', JSON.stringify(res))
         this.router.navigateByUrl('', { replaceUrl: true })
+        console.log(res)
       }, error => {
-        this.isLoading = false
         console.log(error)
-        this.presentAlert('Note creation failed', error.error.error)
+        this.presentAlert('Collection creation failed', error.error.error)
       })
   }
 
@@ -62,6 +55,5 @@ export class CreateNotePage implements OnInit {
     console.log('onDidDismiss resolved with role', role)
 
   }
-
 
 }

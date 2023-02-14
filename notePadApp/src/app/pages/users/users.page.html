@@ -15,11 +15,17 @@
   <ion-list *ngIf="users">
 
     <ion-item *ngFor="let user of users">
-      <ion-icon slot="start" name="person" class="ion-padding"></ion-icon>
-      <ion-label>
+      <ion-thumbnail slot="start">
+        <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
+      </ion-thumbnail>      <ion-label>
         <h1 class="heading">{{user.username}}</h1>
         <h3>{{user.bio}}</h3>
       </ion-label>
+      <div>
+        <ion-item lines="none">
+          <ion-icon slot="end" name="person-add"></ion-icon>
+        </ion-item>
+      </div>
     </ion-item>
 
   </ion-list>

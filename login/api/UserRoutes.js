@@ -3,24 +3,38 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const Note = require('../models/note')
 
+var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]`~+/
+var formatPassword = /[@%^&()\=\[\]{};':"\\|,<>\/?]`~+/
+
+
 router.post('/register', (req, res) => {
 
-    const newUser = new User(req.body)
-    console.log("Unencripted password: " + newUser.password)
-    bcrypt.hash(newUser.password, 10, async function (error, hash) {
-        newUser.password = hash
-        console.log("encrypted password: " + newUser.password)
-        if (await userExists(req.body.username)) {
-            res.status(409).json({ error: 'Username already exists' })
-            console.log('User already exists')
-        } else {
-            newUser.save().then(user => {
-                res.status(201).json(user)
-            }).catch(error => {
-                res.status(500).json({ error: error.message })
-            })
-        }
-    })
+    if (req.body.username.length < 5 || req.body.username.length > 12) {
+        res.status(409).json({ error: 'Usuario debe tener entre 6 y 12 caracteres' })
+    } else if (format.test(req.body.username)) {
+        res.status(409).json({ error: 'Usuario no debe contener caracteres especiales' })
+    } else if (req.body.password.length < 7 || req.body.password.length > 12) {
+        res.status(409).json({ error: 'Contrasena debe tener entre 6 y 12 caracteres' })
+    } else if (formatPassword.test(req.body.password)) {
+        res.status(409).json({ error: 'Contrasena solo puede contener los siguientes caracteres especiales: ! $ # * _ - + .' })
+    } else {
+        const newUser = new User(req.body)
+        console.log("Unencripted password: " + newUser.password)
+        bcrypt.hash(newUser.password, 10, async function (error, hash) {
+            newUser.password = hash
+            console.log("encrypted password: " + newUser.password)
+            if (await userExists(req.body.username)) {
+                res.status(409).json({ error: 'Username already exists' })
+                console.log('User already exists')
+            } else {
+                newUser.save().then(user => {
+                    res.status(201).json(user)
+                }).catch(error => {
+                    res.status(500).json({ error: error.message })
+                })
+            }
+        })
+    }
 })
 
 router.post('/login', (req, res) => {
@@ -56,14 +70,15 @@ router.get('/registeredUsers', (req, res) => {
 router.post('/eliminarUsuario', (req, res) => {
     console.log(req.body.username)
     User.findOneAndDelete({ username: req.body.username }).then(user => {
-            if (user) {
-                console.log("User: " + user.username)
-                Note.deleteMany({ owner: user.username }).then( user => {
-                res.status(200).json({ msg: "Usuario eliminado" })})
-            } else {
-                res.status(400).json({ msg: "No se encontro usuario" })
-            }
-    
+        if (user) {
+            console.log("User: " + user.username)
+            Note.deleteMany({ owner: user.username }).then(user => {
+                res.status(200).json({ msg: "Usuario eliminado" })
+            })
+        } else {
+            res.status(400).json({ msg: "No se encontro usuario" })
+        }
+
     })
 })
 

@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: 'view-note/notes',
     loadChildren: () => import('../pages/view-note/view-note.module').then(e => e.ViewNotePageModule)
+  },
+  {
+    path: 'view-collection/collections',
+    loadChildren: () => import('../pages/view-collection/view-collection.module').then(e => e.ViewCollectionPageModule)
   }
 ];
 
