@@ -18,7 +18,7 @@
 
 
     <ion-buttons slot="end" class="ion-padding">
-      <ion-icon slot="icon-only" name="cloud-upload" class="ion-padding" (click)="saveCollection()"></ion-icon>
+      <ion-icon slot="icon-only" name="checkmark" class="ion-padding" (click)="saveCollection()"></ion-icon>
     </ion-buttons>
 
   </ion-toolbar>
@@ -39,9 +39,9 @@
         <h3 class="heading">{{notes.title}}</h3>
         <p>{{notes.description}}</p>
       </ion-label>
-      <div>
-        <ion-item lines="none">
-          <ion-icon slot="end" name="add"></ion-icon>
+      <div *ngIf="editing == true">
+        <ion-item lines="none" (click)="removeNoteFromCollection(notes)">
+          <ion-icon slot="end" name="remove"></ion-icon>
         </ion-item>
       </div>
 
@@ -59,11 +59,10 @@
           <p>{{notes.description}}</p>
         </ion-label>
         <div>
-          <ion-item lines="none">
+          <ion-item lines="none" (click)="addNoteToCollection(notes)">
             <ion-icon slot="end" name="add"></ion-icon>
           </ion-item>
         </div>
-
       </ion-item>
     </ion-list>
   </div>

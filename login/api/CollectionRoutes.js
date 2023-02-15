@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Collection = require('../models/collection')
+const Note = require('../models/note')
 
 
 
@@ -47,18 +48,44 @@ router.post('/', (req, res) => {
 
 
 router.post('/deleteCollection', (req, res) => {
+
+    variable = req.body.deletedCollection._id
+
     Collection.findOneAndDelete({ _id: req.body.deletedCollection._id }).then(collections => {
         if (collections) {
+            Note.updateOne(
+                { collections: variable },
+                {
+                    collections: undefined
+                }
+            )
+
             Collection.find({ owner: req.body.deletedCollection.owner }).then(collections => {
                 res.status(200).json(collections)
-            }).catch(err => {
-                res.status(500).json({ err })
             })
-        } else {
-            res.status(400).json({ msg: "No se encontro coleccion" })
         }
     })
 })
 
 
-module.exports = router
+
+    router.post('/updateCollection', (req, res) => {
+        Collection.updateOne(
+            { _id: req.body.updatedCollection.id },
+            {
+                $set: {
+                    description: req.body.updatedCollection.description,
+                    title: req.body.updatedCollection.title
+                }
+            }).then(collection => {
+                if (collection) {
+                    res.status(200).json(true)
+                    console.log("Collection updated")
+                } else {
+                    res.status(401).json
+                    console.log("Collection not found")
+                }
+            })
+    })
+
+    module.exports = router

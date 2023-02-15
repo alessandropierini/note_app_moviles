@@ -1,11 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{noteTitle}}</ion-title>
+    <ion-title class="heading">
+      <ion-input [(ngModel)]="newNoteTitle"></ion-input>
+    </ion-title>
 
 <ion-back-button color="dark" slot="start"></ion-back-button>
 
     <ion-buttons slot="end" class="ion-padding">
-      <ion-icon slot="icon-only" name="cloud-upload" class="ion-padding" (click)="saveNote()"></ion-icon>
+      <ion-icon slot="icon-only" name="checkmark" class="ion-padding" (click)="saveNote()"></ion-icon>
     </ion-buttons>
 
   </ion-toolbar>
@@ -17,4 +19,4 @@
     <ion-input [(ngModel)]="newNoteDescription"></ion-input>
   </ion-item>
   <ion-textarea [(ngModel)]="newNoteInfo"></ion-textarea>
-</ion-content>
+</ion-content> 

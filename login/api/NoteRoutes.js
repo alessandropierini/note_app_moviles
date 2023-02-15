@@ -18,7 +18,7 @@ router.post('/notInCollection', (req, res) => {
 
     console.log(req.body.name)
 
-    Note.find({ owner: req.body.name }).then(notes => {
+    Note.find({ owner: req.body.name, collections: { $exists: false } }).then(notes => {
         res.status(200).json(notes)
     }).catch(err => {
         res.status(500).json({ err })
@@ -26,13 +26,39 @@ router.post('/notInCollection', (req, res) => {
 })
 
 router.post('/InCollection', (req, res) => {
-
-    console.log(req.body.name)
-
-    Note.find({ owner: req.body.name }).then(notes => {
+console.log(req.body.info.id)
+    Note.find({owner: req.body.info.user, collections: req.body.info.id}).then(notes => {
         res.status(200).json(notes)
     }).catch(err => {
         res.status(500).json({ err })
+    })
+})
+
+router.post('/addToCollection', (req, res) => {
+    Note.updateOne(
+        { _id: req.body.info.noteId },
+        {
+            $set: {
+                collections: req.body.info.id
+            }
+        }
+    ).then(notes => {
+        res.status(200).json(notes)
+    }).catch(err => {
+        res.status(500).json({err})
+    })
+})
+
+router.post('/removeFromCollection', (req, res) => {
+    Note.updateOne(
+        {_id: req.body.info.noteId},
+        {
+            collections: undefined
+        }
+    ).then(notes => {
+        res.status(200).json(notes)
+    }).catch(err => {
+        res.status(500).json({err})
     })
 })
 
@@ -106,7 +132,8 @@ router.post('/updateNote', (req, res) => {
         {
             $set: {
                 info: req.body.updatedNote.info,
-                description: req.body.updatedNote.description
+                description: req.body.updatedNote.description,
+                title: req.body.updatedNote.title
             }
         }).then(note => {
             if (note) {
@@ -117,8 +144,6 @@ router.post('/updateNote', (req, res) => {
                 console.log("note not found")
             }
         })
-
-
 })
 
 

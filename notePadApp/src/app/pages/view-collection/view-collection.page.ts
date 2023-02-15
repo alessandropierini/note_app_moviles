@@ -27,6 +27,7 @@ export class ViewCollectionPage implements OnInit {
 
   sub: any
 
+
   ngOnInit() {
     this.collectionOwner = this.route.snapshot.paramMap.get("owner")
     this.collectionId = this.route.snapshot.paramMap.get("_id")
@@ -43,32 +44,54 @@ export class ViewCollectionPage implements OnInit {
     if (this.user == null) {
       this.router.navigateByUrl('/login', { replaceUrl: true })
     } else {
-      this.httpClient.post('http://localhost:3000/notes/notInCollection', { name: this.user.username }).subscribe(res => {
-        this.userNotesNotInCollection = res
-      },
-        error => { console.log("error" + error) })
+      this.loadAllNotes()
     }
-
-
-    this.httpClient.post('http://localhost:3000/notes/InCollection', { name: this.user.username }).subscribe(res => {
-      this.userNotesInCollection = res
-    },
-      error => { console.log("error" + error) })
-
-
   }
 
   ionViewWillEnter() {
+
+    this.collectionOwner = this.route.snapshot.paramMap.get("owner")
+    this.collectionId = this.route.snapshot.paramMap.get("_id")
+
+    this.collectionTitle = this.route.snapshot.paramMap.get("title")
+    this.newCollectionTitle = this.collectionTitle
+
+    this.collectionDescription = this.route.snapshot.paramMap.get("description")
+    this.newCollectionDescription = this.collectionDescription
+
+    this.user = JSON.parse(localStorage.getItem('User')!)
+
+    this.loadAllNotes()
+  }
+
+  loadAllNotes() {
+
     this.user = JSON.parse(localStorage.getItem('User')!)
 
     this.httpClient.post('http://localhost:3000/notes/notInCollection', { name: this.user.username }).subscribe(res => {
       this.userNotesNotInCollection = res
-    },
-      error => { console.log("error" + error) })
+    })
+    let info = {
+      user: this.user.username,
+      id: this.collectionId
+    }
+    this.httpClient.post('http://localhost:3000/notes/InCollection', { info }).subscribe(res => {
+      this.userNotesInCollection = res
+    })
   }
 
   saveCollection() {
-    console.log("saved")
+    let newInfo = {
+      description: this.newCollectionDescription,
+      title: this.newCollectionTitle,
+      id: this.collectionId
+    }
+    console.log(newInfo)
+    this.httpClient.post('http://localhost:3000/collections/updateCollection', { updatedCollection: newInfo }).subscribe(res => {
+      this.router.navigateByUrl('/', { replaceUrl: false })
+    }
+
+    )
   }
 
   editCollection() {
@@ -79,9 +102,29 @@ export class ViewCollectionPage implements OnInit {
     } else {
       this.editing = false
       console.log(this.editing)
-
     }
   }
 
+  addNoteToCollection(notes) {
+    let info = {
+      username: this.collectionOwner,
+      id: this.collectionId,
+      noteId: notes._id
+    }
+    this.httpClient.post('http://localhost:3000/notes/addToCollection', { info: info }).subscribe(res => {
+      console.log(res)
+    })
+    this.loadAllNotes()
+  }
+
+  removeNoteFromCollection(notes) {
+    let info = {
+      noteId: notes._id
+    }
+    this.httpClient.post('http://localhost:3000/notes/removeFromCollection', { info: info }).subscribe(res => {
+      console.log(res)
+    })
+    this.loadAllNotes()
+  }
 
 }

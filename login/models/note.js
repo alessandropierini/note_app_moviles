@@ -22,7 +22,7 @@ const NoteSchema = new mongoose.Schema({
         required: [false]
     },
     collections: {
-        type: Array,
+        type: String,
         required: [false]
     }
 

@@ -2,6 +2,7 @@ const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const Note = require('../models/note')
+const Collection = require('../models/collection')
 
 var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]`~+/
 var formatPassword = /[@%^&()\=\[\]{};':"\\|,<>\/?]`~+/
@@ -71,9 +72,12 @@ router.post('/eliminarUsuario', (req, res) => {
     console.log(req.body.username)
     User.findOneAndDelete({ username: req.body.username }).then(user => {
         if (user) {
-            console.log("User: " + user.username)
+            res.status(200).json({ msg: "Usuario eliminado" })
             Note.deleteMany({ owner: user.username }).then(user => {
-                res.status(200).json({ msg: "Usuario eliminado" })
+                res.status(200).json({ msg: "Notas eliminadas" })
+            })
+            Collection.deleteMany({ owner: user.username }).then(user => {
+                res.status(200).json({ msg: "Colecciones eliminadas" })
             })
         } else {
             res.status(400).json({ msg: "No se encontro usuario" })
