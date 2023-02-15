@@ -49,18 +49,18 @@ router.post('/', (req, res) => {
 
 router.post('/deleteCollection', (req, res) => {
 
-    variable = req.body.deletedCollection._id
+    variable = req.body.deletedCollection
 
     Collection.findOneAndDelete({ _id: req.body.deletedCollection._id }).then(collections => {
         if (collections) {
             Note.updateOne(
-                { collections: variable },
+                { collections: variable._id },
                 {
                     collections: undefined
                 }
             )
 
-            Collection.find({ owner: req.body.deletedCollection.owner }).then(collections => {
+            Collection.find({ owner: variable.owner }).then(collections => {
                 res.status(200).json(collections)
             })
         }
@@ -69,23 +69,23 @@ router.post('/deleteCollection', (req, res) => {
 
 
 
-    router.post('/updateCollection', (req, res) => {
-        Collection.updateOne(
-            { _id: req.body.updatedCollection.id },
-            {
-                $set: {
-                    description: req.body.updatedCollection.description,
-                    title: req.body.updatedCollection.title
-                }
-            }).then(collection => {
-                if (collection) {
-                    res.status(200).json(true)
-                    console.log("Collection updated")
-                } else {
-                    res.status(401).json
-                    console.log("Collection not found")
-                }
-            })
-    })
+router.post('/updateCollection', (req, res) => {
+    Collection.updateOne(
+        { _id: req.body.updatedCollection.id },
+        {
+            $set: {
+                description: req.body.updatedCollection.description,
+                title: req.body.updatedCollection.title
+            }
+        }).then(collection => {
+            if (collection) {
+                res.status(200).json(true)
+                console.log("Collection updated")
+            } else {
+                res.status(401).json
+                console.log("Collection not found")
+            }
+        })
+})
 
-    module.exports = router
+module.exports = router

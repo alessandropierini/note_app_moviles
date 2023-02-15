@@ -41,9 +41,8 @@
         <ion-icon slot="end" name="trash" (click)="presentConfirmCollections(collections)"></ion-icon>
       </ion-item>
     </ion-item>
-
   </ion-list>
-  <ion-label *ngIf="userCollections == null">No collections</ion-label> 
+  <ion-label class="ion-padding" *ngIf="userCollections == ''">No collections</ion-label> 
 
   <h4 class="heading">Notes</h4>
   <ion-list *ngIf="userNotes">
@@ -69,7 +68,7 @@
       </div>
     </ion-item>
   </ion-list>
-  <ion-label *ngIf="userNotes == null">No notes</ion-label>
+  <ion-label class="ion-padding" *ngIf="userNotes == ''">No notes</ion-label>
 
 </ion-content>
 

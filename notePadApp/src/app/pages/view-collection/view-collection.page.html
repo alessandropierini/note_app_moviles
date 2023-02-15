@@ -28,8 +28,9 @@
   <ion-item color="dark">
     <ion-input [(ngModel)]="newCollectionDescription"></ion-input>
   </ion-item>
-
+<div  class="ion-padding">
   <h4 class="heading">Collection Notes</h4>
+</div>
   <ion-list *ngIf="userNotesInCollection">
     <ion-item *ngFor="let notes of userNotesInCollection">
       <ion-thumbnail slot="start">
@@ -44,9 +45,10 @@
           <ion-icon slot="end" name="remove"></ion-icon>
         </ion-item>
       </div>
-
     </ion-item>
   </ion-list>
+  <ion-label class="ion-padding" *ngIf="userNotesInCollection == ''">No notes</ion-label>
+
   <div *ngIf="editing == true">
     <h4 class="heading">Other notes</h4>
     <ion-list *ngIf="userNotesNotInCollection">
