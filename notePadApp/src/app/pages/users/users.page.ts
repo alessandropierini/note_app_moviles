@@ -21,7 +21,7 @@ export class UsersPage implements OnInit {
     if (this.user == null) {
       this.router.navigateByUrl('/login', { replaceUrl: true })
     } else {
-      this.httpClient.get('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/users/registeredUsers').subscribe(res => {
+      this.httpClient.get('noteappmoviles-production.up.railway.app/users/registeredUsers').subscribe(res => {
         this.users = res
         console.log(this.users)
       },

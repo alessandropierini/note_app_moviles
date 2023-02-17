@@ -38,7 +38,7 @@ export class RegisterPage implements OnInit {
 
     }
 
-    this.http.post('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/users/register', user)
+    this.http.post('noteappmoviles-production.up.railway.app/users/register', user)
       .subscribe(res => {
         this.isLoading = false
         localStorage.setItem('User', JSON.stringify(res))

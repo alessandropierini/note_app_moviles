@@ -31,7 +31,7 @@ export class CreateCollectionPage implements OnInit {
       owner: this.owner,      
     }
 
-    this.http.post('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/collections/createNewCollection', collection)
+    this.http.post('noteappmoviles-production.up.railway.app/collections/createNewCollection', collection)
       .subscribe(res => {
         this.router.navigateByUrl('', { replaceUrl: true })
         console.log(res)

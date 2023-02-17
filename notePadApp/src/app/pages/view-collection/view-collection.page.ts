@@ -68,14 +68,14 @@ export class ViewCollectionPage implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem('User')!)
 
-    this.httpClient.post('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/notes/notInCollection', { name: this.user.username }).subscribe(res => {
+    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/notInCollection', { name: this.user.username }).subscribe(res => {
       this.userNotesNotInCollection = res
     })
     let info = {
       user: this.user.username,
       id: this.collectionId
     }
-    this.httpClient.post('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/notes/InCollection', { info }).subscribe(res => {
+    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/InCollection', { info }).subscribe(res => {
       this.userNotesInCollection = res
     })
   }
@@ -87,7 +87,7 @@ export class ViewCollectionPage implements OnInit {
       id: this.collectionId
     }
     console.log(newInfo)
-    this.httpClient.post('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/collections/updateCollection', { updatedCollection: newInfo }).subscribe(res => {
+    this.httpClient.post('noteappmoviles-production.up.railway.app/collections/updateCollection', { updatedCollection: newInfo }).subscribe(res => {
       this.router.navigateByUrl('/', { replaceUrl: false })
     }
 
@@ -111,7 +111,7 @@ export class ViewCollectionPage implements OnInit {
       id: this.collectionId,
       noteId: notes._id
     }
-    this.httpClient.post('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/notes/addToCollection', { info: info }).subscribe(res => {
+    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/addToCollection', { info: info }).subscribe(res => {
       console.log(res)
     })
     this.loadAllNotes()
@@ -121,7 +121,7 @@ export class ViewCollectionPage implements OnInit {
     let info = {
       noteId: notes._id
     }
-    this.httpClient.post('https://railway.app/project/54f5e5bb-30f0-4e33-a749-5bbfbfad388b/service/a8479972-22e3-431f-a942-dbf214ef87f4/notes/removeFromCollection', { info: info }).subscribe(res => {
+    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/removeFromCollection', { info: info }).subscribe(res => {
       console.log(res)
     })
     this.loadAllNotes()
