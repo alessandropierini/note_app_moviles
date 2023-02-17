@@ -29,7 +29,7 @@ export class SettingsPage implements OnInit {
   }
 
   eliminar() {
-    this.httpClient.post('noteappmoviles-production.up.railway.app/users/eliminarUsuario', { username: this.user.username }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/users/eliminarUsuario', { username: this.user.username }).subscribe(res => {
       localStorage.clear()
       this.router.navigateByUrl('/register', { replaceUrl: true })
     }, error => {
@@ -46,9 +46,9 @@ export class SettingsPage implements OnInit {
     }
     console.log("Update initialized")
 
-    this.httpClient.post('noteappmoviles-production.up.railway.app/users/updateInfo', { info: newInfo }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/users/updateInfo', { info: newInfo }).subscribe(res => {
       console.log(res)
-      this.router.navigateByUrl('', { replaceUrl: true })
+      this.router.navigateByUrl('/home', { replaceUrl: true })
 
     }, error => {
       console.log(error)
@@ -81,7 +81,7 @@ export class SettingsPage implements OnInit {
         {
           text: 'Eliminar usuario permanentemente',
           handler: () => {
-            this.httpClient.post('noteappmoviles-production.up.railway.app/users/eliminarUsuario', { username: this.user.username }).subscribe(res => {
+            this.httpClient.post('https://noteappmoviles-production.up.railway.app/users/eliminarUsuario', { username: this.user.username }).subscribe(res => {
               localStorage.clear()
               this.router.navigateByUrl('/register', { replaceUrl: true })
             }, error => {

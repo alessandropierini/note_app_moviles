@@ -68,14 +68,14 @@ export class ViewCollectionPage implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem('User')!)
 
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/notInCollection', { name: this.user.username }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/notInCollection', { name: this.user.username }).subscribe(res => {
       this.userNotesNotInCollection = res
     })
     let info = {
       user: this.user.username,
       id: this.collectionId
     }
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/InCollection', { info }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/InCollection', { info }).subscribe(res => {
       this.userNotesInCollection = res
     })
   }
@@ -87,8 +87,8 @@ export class ViewCollectionPage implements OnInit {
       id: this.collectionId
     }
     console.log(newInfo)
-    this.httpClient.post('noteappmoviles-production.up.railway.app/collections/updateCollection', { updatedCollection: newInfo }).subscribe(res => {
-      this.router.navigateByUrl('/', { replaceUrl: false })
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/collections/updateCollection', { updatedCollection: newInfo }).subscribe(res => {
+      this.router.navigateByUrl('/home', { replaceUrl: false })
     }
 
     )
@@ -111,7 +111,7 @@ export class ViewCollectionPage implements OnInit {
       id: this.collectionId,
       noteId: notes._id
     }
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/addToCollection', { info: info }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/addToCollection', { info: info }).subscribe(res => {
       console.log(res)
     })
     this.loadAllNotes()
@@ -121,7 +121,7 @@ export class ViewCollectionPage implements OnInit {
     let info = {
       noteId: notes._id
     }
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/removeFromCollection', { info: info }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/removeFromCollection', { info: info }).subscribe(res => {
       console.log(res)
     })
     this.loadAllNotes()

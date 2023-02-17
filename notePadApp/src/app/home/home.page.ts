@@ -27,12 +27,12 @@ export class HomePage implements OnInit {
     if (this.user == null) {
       this.router.navigateByUrl('/login', { replaceUrl: true })
     } else {
-      this.httpClient.post('noteappmoviles-production.up.railway.app/notes', { name: this.user.username }).subscribe(res => {
+      this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes', { name: this.user.username }).subscribe(res => {
         this.userNotes = res
       },
         error => { console.log("error" + error) })
 
-      this.httpClient.post('noteappmoviles-production.up.railway.app/collections', { name: this.user.username }).subscribe(res => {
+      this.httpClient.post('https://noteappmoviles-production.up.railway.app/collections', { name: this.user.username }).subscribe(res => {
         this.userCollections = res
       },
         error => { console.log("error" + error) })
@@ -42,12 +42,12 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     this.user = JSON.parse(localStorage.getItem('User')!)
 
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes', { name: this.user.username }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes', { name: this.user.username }).subscribe(res => {
       this.userNotes = res
     },
       error => { console.log("error" + error) })
 
-    this.httpClient.post('noteappmoviles-production.up.railway.app/collections', { name: this.user.username }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/collections', { name: this.user.username }).subscribe(res => {
       this.userCollections = res
     },
       error => { console.log("error" + error) })
@@ -62,14 +62,14 @@ export class HomePage implements OnInit {
 
   favorite(notes) {
     this.note = notes
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/favorite', { note: this.note }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/favorite', { note: this.note }).subscribe(res => {
       this.userNotes = res
     }, error => { console.log("error" + error) })
   }
 
   showFavorites() {
     this.user = JSON.parse(localStorage.getItem('User')!)
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/showFavorites', { name: this.user.username }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/showFavorites', { name: this.user.username }).subscribe(res => {
       this.userNotes = res
     },
       error => { console.log("error" + error) })
@@ -77,7 +77,7 @@ export class HomePage implements OnInit {
 
   showAll() {
     this.user = JSON.parse(localStorage.getItem('User')!)
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes', { name: this.user.username }).subscribe(res => {
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes', { name: this.user.username }).subscribe(res => {
       this.userNotes = res
     },
       error => { console.log("error" + error) })
@@ -101,7 +101,7 @@ export class HomePage implements OnInit {
             console.log("trash")
             console.log(collections)
 
-            this.httpClient.post('noteappmoviles-production.up.railway.app/collections/deleteCollection', { deletedCollection: collections }).subscribe(res => {
+            this.httpClient.post('https://noteappmoviles-production.up.railway.app/collections/deleteCollection', { deletedCollection: collections }).subscribe(res => {
               this.userCollections = res
             },
               error => { console.log("error" + error) })
@@ -132,7 +132,7 @@ export class HomePage implements OnInit {
             console.log("trash")
             console.log(notes)
 
-            this.httpClient.post('noteappmoviles-production.up.railway.app/notes/deleteNote', { deletedNote: notes }).subscribe(res => {
+            this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/deleteNote', { deletedNote: notes }).subscribe(res => {
               this.userNotes = res
             },
               error => { console.log("error" + error) })

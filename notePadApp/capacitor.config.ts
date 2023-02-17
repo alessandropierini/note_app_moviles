@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.noteapp',
-  appName: 'NoteApp',
+  appId: 'com.noteApp',
+  appName: 'notePadApp',
   webDir: 'www',
   bundledWebRuntime: false
 };

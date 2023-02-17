@@ -36,7 +36,7 @@ export class CreateNotePage implements OnInit {
       
     }
 
-    this.http.post('noteappmoviles-production.up.railway.app/notes/createNewNote', note)
+    this.http.post('https://noteappmoviles-production.up.railway.app/notes/createNewNote', note)
       .subscribe(res => {
         this.isLoading = false
         localStorage.setItem('note', JSON.stringify(res))

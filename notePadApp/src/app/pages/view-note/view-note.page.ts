@@ -67,8 +67,8 @@ export class ViewNotePage implements OnInit {
       title: this.newNoteTitle
     }
     console.log(newInfo)
-    this.httpClient.post('noteappmoviles-production.up.railway.app/notes/updateNote', { updatedNote: newInfo }).subscribe(res => {
-      this.router.navigateByUrl('/', { replaceUrl: false })
+    this.httpClient.post('https://noteappmoviles-production.up.railway.app/notes/updateNote', { updatedNote: newInfo }).subscribe(res => {
+      this.router.navigateByUrl('/home', { replaceUrl: false })
     })
   }
 

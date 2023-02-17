@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
   
     const user = JSON.parse(localStorage.getItem('User')!)
     if (user !== null) {
-      this.router.navigateByUrl('', { replaceUrl: true })
+      this.router.navigateByUrl('/home', { replaceUrl: true })
     } else {
       } error => {console.log("error" + error)}
 
@@ -38,11 +38,11 @@ export class LoginPage implements OnInit {
       password: this.password
     }
 
-    this.http.post('noteappmoviles-production.up.railway.app/users/login', {credentials})
+    this.http.post('https://noteappmoviles-production.up.railway.app/users/login', {credentials})
       .subscribe(res => {
         this.isLoading = false
         localStorage.setItem('User', JSON.stringify(res))
-        this.router.navigateByUrl('', { replaceUrl: true })
+        this.router.navigateByUrl('/home', { replaceUrl: true })
       }, error => {
         this.isLoading = false
         this.presentAlert('Login failed', error.error.error)
